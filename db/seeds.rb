@@ -8,8 +8,11 @@
 
 require "faker"
 
+GossipTag.destroy_all
+Gossip.destroy_all
 User.destroy_all
 City.destroy_all
+Tag.destroy_all
 
 10.times do
     City.create(
@@ -42,3 +45,22 @@ puts User.all
 end
 
 puts Gossip.all
+
+10.times do
+    Tag.create(
+        title: Faker::Lorem.word
+    )
+end
+
+allGossip = Gossip.all
+
+allGossip.each do | gossip |
+    rand(1..2).times do
+        GossipTag.create(
+            gossip: gossip,
+            tag: Tag.order(Arel.sql('RANDOM()')).first
+        )
+    end
+end 
+
+puts GossipTag.all
