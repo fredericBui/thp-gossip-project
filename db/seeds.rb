@@ -8,6 +8,8 @@
 
 require "faker"
 
+# [TO-DO] Factoriser le code quand tu as le temps
+
 def resetData
     # Du plus dépendant au moins dépendant
     SubComment.destroy_all
@@ -93,7 +95,7 @@ def createData
         )
     end
 
-    # need to be improve
+    # [TO-DO] Need to be improve
     20.times do
         Like.create(
             user: User.order(Arel.sql('RANDOM()')).first,
