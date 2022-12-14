@@ -10,6 +10,7 @@ require "faker"
 
 def resetData
     # Du plus dépendant au moins dépendant
+    PrivateMessageReceived.destroy_all
     PrivateMessage.destroy_all
     GossipTag.destroy_all
     Gossip.destroy_all
@@ -64,11 +65,21 @@ def createData
     end 
 
     3.times do
-        PrivateMessage.create(
+        privateMessage = PrivateMessage.create(
             content: Faker::Lorem.paragraph,
-            sender: User.find(rand(1..User.count)),
-            receiver: User.find(rand(1..User.count))
+            sender: User.find(rand(1..User.count))
         )
+        lastUser = 0
+        rand(1..3).times do
+            randUser = User.find(rand(1..User.count))
+            if lastUser != randUser
+                PrivateMessageReceived.create(
+                    receiver: randUser,
+                    private_message: privateMessage,
+                )
+                lastUser = randUser
+            end
+        end
     end
 end
 
@@ -79,6 +90,7 @@ def showData
     puts Tag.all
     puts GossipTag.all
     puts PrivateMessage.all
+    puts PrivateMessageReceived.all
 end
 
 resetData
