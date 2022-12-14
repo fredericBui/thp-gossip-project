@@ -10,12 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_14_095531) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_14_100458) do
   create_table "cities", force: :cascade do |t|
     t.string "name"
     t.string "zip_code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "gossip_tags", force: :cascade do |t|
+    t.integer "gossip_id"
+    t.integer "tag_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["gossip_id"], name: "index_gossip_tags_on_gossip_id"
+    t.index ["tag_id"], name: "index_gossip_tags_on_tag_id"
   end
 
   create_table "gossips", force: :cascade do |t|
@@ -45,6 +54,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_14_095531) do
     t.index ["city_id"], name: "index_users_on_city_id"
   end
 
+  add_foreign_key "gossip_tags", "gossips"
+  add_foreign_key "gossip_tags", "tags"
   add_foreign_key "gossips", "users"
   add_foreign_key "users", "cities"
 end
