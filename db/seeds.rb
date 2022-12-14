@@ -8,57 +8,79 @@
 
 require "faker"
 
-GossipTag.destroy_all
-Gossip.destroy_all
-User.destroy_all
-City.destroy_all
-Tag.destroy_all
-
-10.times do
-    City.create(
-        name: Faker::Address.city,
-        zip_code: Faker::Address.zip_code
-    )
+def resetData
+    # Du plus dépendant au moins dépendant
+    PrivateMessage.destroy_all
+    GossipTag.destroy_all
+    Gossip.destroy_all
+    User.destroy_all
+    City.destroy_all
+    Tag.destroy_all
 end
 
-10.times do
-    User.create(
-        first_name: Faker::Name.first_name, 
-        last_name: Faker::Name.last_name, 
-        description: Faker::Lorem.paragraph,
-        email: "#{Faker::Name.first_name}.#{Faker::Name.last_name}@gmail.com",
-        age: rand(99),
-        city: City.order(Arel.sql('RANDOM()')).first
-    ) 
-end
+def createData
 
-20.times do
-    Gossip.create(
-        title: Faker::Lorem.sentence,
-        content: Faker::Lorem.paragraph,
-        user: User.order(Arel.sql('RANDOM()')).first
-    )
-end
-
-10.times do
-    Tag.create(
-        title: Faker::Lorem.word
-    )
-end
-
-allGossip = Gossip.all
-
-allGossip.each do | gossip |
-    rand(1..2).times do
-        GossipTag.create(
-            gossip: gossip,
-            tag: Tag.order(Arel.sql('RANDOM()')).first
+    10.times do
+        City.create(
+            name: Faker::Address.city,
+            zip_code: Faker::Address.zip_code
         )
     end
-end 
 
-puts City.all
-puts User.all
-puts Gossip.all
-puts Tag.all
-puts GossipTag.all
+    10.times do
+        User.create(
+            first_name: Faker::Name.first_name, 
+            last_name: Faker::Name.last_name, 
+            description: Faker::Lorem.paragraph,
+            email: "#{Faker::Name.first_name}.#{Faker::Name.last_name}@gmail.com",
+            age: rand(99),
+            city: City.order(Arel.sql('RANDOM()')).first
+        ) 
+    end
+
+    20.times do
+        Gossip.create(
+            title: Faker::Lorem.sentence,
+            content: Faker::Lorem.paragraph,
+            user: User.order(Arel.sql('RANDOM()')).first
+        )
+    end
+
+    10.times do
+        Tag.create(
+            title: Faker::Lorem.word
+        )
+    end
+
+    allGossip = Gossip.all
+
+    allGossip.each do | gossip |
+        rand(1..2).times do
+            GossipTag.create(
+                gossip: gossip,
+                tag: Tag.order(Arel.sql('RANDOM()')).first
+            )
+        end
+    end 
+
+    3.times do
+        PrivateMessage.create(
+            content: Faker::Lorem.paragraph,
+            sender: User.find(rand(1..User.count)),
+            receiver: User.find(rand(1..User.count))
+        )
+    end
+end
+
+def showData
+    puts City.all
+    puts User.all
+    puts Gossip.all
+    puts Tag.all
+    puts GossipTag.all
+    puts PrivateMessage.all
+end
+
+resetData
+createData
+showData
