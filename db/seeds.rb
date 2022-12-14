@@ -32,3 +32,13 @@ puts City.all
 end
 
 puts User.all
+
+20.times do
+    Gossip.create(
+        title: Faker::Lorem.sentence,
+        content: Faker::Lorem.paragraph,
+        user: User.order(Arel.sql('RANDOM()')).first
+    )
+end
+
+puts Gossip.all
