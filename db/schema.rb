@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_14_133125) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_14_134622) do
   create_table "cities", force: :cascade do |t|
     t.string "name"
     t.string "zip_code"
@@ -44,6 +44,17 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_14_133125) do
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.index ["user_id"], name: "index_gossips_on_user_id"
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "gossip_id"
+    t.integer "comment_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["comment_id"], name: "index_likes_on_comment_id"
+    t.index ["gossip_id"], name: "index_likes_on_gossip_id"
+    t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
   create_table "private_message_receiveds", force: :cascade do |t|
@@ -86,6 +97,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_14_133125) do
   add_foreign_key "gossip_tags", "gossips"
   add_foreign_key "gossip_tags", "tags"
   add_foreign_key "gossips", "users"
+  add_foreign_key "likes", "comments"
+  add_foreign_key "likes", "gossips"
+  add_foreign_key "likes", "users"
   add_foreign_key "private_message_receiveds", "users", column: "receiver_id"
   add_foreign_key "private_messages", "users", column: "sender_id"
   add_foreign_key "users", "cities"
