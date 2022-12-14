@@ -10,6 +10,7 @@ require "faker"
 
 def resetData
     # Du plus dépendant au moins dépendant
+    SubComment.destroy_all
     Like.destroy_all
     Comment.destroy_all
     PrivateMessageReceived.destroy_all
@@ -100,6 +101,14 @@ def createData
             gossip: Gossip.order(Arel.sql('RANDOM()')).first
         )
     end
+
+    5.times do
+        SubComment.create(
+            content: Faker::Lorem.paragraph,
+            user: User.order(Arel.sql('RANDOM()')).first,
+            comment: Comment.order(Arel.sql('RANDOM()')).first
+        )
+    end
 end
 
 def showData
@@ -112,6 +121,7 @@ def showData
     puts PrivateMessageReceived.all
     puts Comment.all
     puts Like.all
+    puts SubComment.all
 end
 
 resetData
