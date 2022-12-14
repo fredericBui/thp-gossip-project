@@ -9,6 +9,16 @@
 require "faker"
 
 User.destroy_all
+City.destroy_all
+
+10.times do
+    City.create(
+        name: Faker::Address.city,
+        zip_code: Faker::Address.zip_code
+    )
+end
+
+puts City.all
 
 10.times do
     User.create(
@@ -16,8 +26,9 @@ User.destroy_all
         last_name: Faker::Name.last_name, 
         description: Faker::Lorem.paragraph,
         email: "#{Faker::Name.first_name}.#{Faker::Name.last_name}@gmail.com",
-        age: rand(99)
+        age: rand(99),
+        city: City.order(Arel.sql('RANDOM()')).first
     ) 
 end
 
-puts User.order(Arel.sql('RANDOM()')).first
+puts User.all
