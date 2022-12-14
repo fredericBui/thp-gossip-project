@@ -21,8 +21,6 @@ Tag.destroy_all
     )
 end
 
-puts City.all
-
 10.times do
     User.create(
         first_name: Faker::Name.first_name, 
@@ -34,8 +32,6 @@ puts City.all
     ) 
 end
 
-puts User.all
-
 20.times do
     Gossip.create(
         title: Faker::Lorem.sentence,
@@ -43,8 +39,6 @@ puts User.all
         user: User.order(Arel.sql('RANDOM()')).first
     )
 end
-
-puts Gossip.all
 
 10.times do
     Tag.create(
@@ -63,4 +57,8 @@ allGossip.each do | gossip |
     end
 end 
 
+puts City.all
+puts User.all
+puts Gossip.all
+puts Tag.all
 puts GossipTag.all
