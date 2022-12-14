@@ -3,7 +3,6 @@ class CreatePrivateMessages < ActiveRecord::Migration[7.0]
     create_table :private_messages do |t|
       t.text :content
       t.references :sender, index: true, foreign_key: {to_table: :users}
-      t.references :receiver, index: true, foreign_key: {to_table: :users}
       t.timestamps
     end
   end
