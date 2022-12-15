@@ -8,7 +8,7 @@
 
 require 'faker'
 
-def resetData
+def reset_data
   # Du plus dépendant au moins dépendant
   SubComment.destroy_all
   Like.destroy_all
@@ -22,8 +22,8 @@ def resetData
   Tag.destroy_all
 end
 
-def createCity(n)
-  n.times do
+def create_city(number)
+  number.times do
     City.create(
       name: Faker::Address.city,
       zip_code: Faker::Address.zip_code
@@ -31,8 +31,8 @@ def createCity(n)
   end
 end
 
-def createUser(n)
-  n.times do
+def create_user(number)
+  number.times do
     User.create(
       first_name: Faker::Name.first_name,
       last_name: Faker::Name.last_name,
@@ -44,8 +44,8 @@ def createUser(n)
   end
 end
 
-def createGossip(n)
-  n.times do
+def create_gossip(number)
+  number.times do
     Gossip.create(
       title: Faker::Lorem.sentence,
       content: Faker::Lorem.paragraph,
@@ -54,18 +54,18 @@ def createGossip(n)
   end
 end
 
-def createTag(n)
-  n.times do
+def create_tag(number)
+  number.times do
     Tag.create(
       title: Faker::Lorem.word
     )
   end
 end
 
-def createGossipTag
-  allGossip = Gossip.all
+def create_gossip_tag
+  all_gossip = Gossip.all
 
-  allGossip.each do |gossip|
+  all_gossip.each do |gossip|
     rand(1..2).times do
       GossipTag.create(
         gossip:,
@@ -75,28 +75,32 @@ def createGossipTag
   end
 end
 
-def createPrivateMessage(n)
-  n.times do
-    privateMessage = PrivateMessage.create(
+def create_private_message(number)
+  number.times do
+    private_message = PrivateMessage.create(
       content: Faker::Lorem.paragraph,
       sender: User.find(rand(1..User.count))
     )
-    lastUser = 0
-    rand(1..3).times do
-      randUser = User.find(rand(1..User.count))
-      next unless lastUser != randUser
-
-      PrivateMessageReceived.create(
-        receiver: randUser,
-        private_message: privateMessage
-      )
-      lastUser = randUser
-    end
+    create_private_message_received(private_message)
   end
 end
 
-def createComment(n)
-  n.times do
+def create_private_message_received(private_message_created)
+  last_user = 0
+  rand(1..3).times do
+    rand_user = User.find(rand(1..User.count))
+    next unless last_user != rand_user
+
+    PrivateMessageReceived.create(
+      receiver: rand_user,
+      private_message: private_message_created
+    )
+    last_user = rand_user
+  end
+end
+
+def create_comment(number)
+  number.times do
     Comment.create(
       content: Faker::Lorem.paragraph,
       user: User.order(Arel.sql('RANDOM()')).first,
@@ -105,9 +109,9 @@ def createComment(n)
   end
 end
 
-def createLike(n)
-  # [TO-DO] Need to be improve
-  n.times do
+def create_like(number)
+  # [TO-DO] Need to be improve. Just like comment or gossip
+  number.times do
     Like.create(
       user: User.order(Arel.sql('RANDOM()')).first,
       comment: Comment.order(Arel.sql('RANDOM()')).first,
@@ -116,8 +120,8 @@ def createLike(n)
   end
 end
 
-def createSubComment(n)
-  n.times do
+def create_sub_comment(number)
+  number.times do
     SubComment.create(
       content: Faker::Lorem.paragraph,
       user: User.order(Arel.sql('RANDOM()')).first,
@@ -126,12 +130,15 @@ def createSubComment(n)
   end
 end
 
-def showData
+def show_data1
   puts City.all
   puts User.all
   puts Gossip.all
   puts Tag.all
   puts GossipTag.all
+end
+
+def show_data2
   puts PrivateMessage.all
   puts PrivateMessageReceived.all
   puts Comment.all
@@ -139,14 +146,15 @@ def showData
   puts SubComment.all
 end
 
-resetData
-createCity(10)
-createUser(10)
-createGossip(20)
-createTag(10)
-createGossipTag
-createPrivateMessage(3)
-createComment(20)
-createLike(20)
-createSubComment(5)
-showData
+reset_data
+create_city(10)
+create_user(10)
+create_gossip(20)
+create_tag(10)
+create_gossip_tag
+create_private_message(3)
+create_comment(20)
+create_like(20)
+create_sub_comment(5)
+show_data1
+show_data2
