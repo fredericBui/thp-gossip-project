@@ -117,13 +117,13 @@ def create_like(number)
     randChoice = rand(0..1)
     case randChoice
       when 0
-        puts "choice 0"
+        puts "choice like 0"
         Like.create(
           user: User.order(Arel.sql('RANDOM()')).first,
           liked: Comment.order(Arel.sql('RANDOM()')).first
         )
       when 1
-        puts "choice 1"
+        puts "choice like 1"
         Like.create(
           user: User.order(Arel.sql('RANDOM()')).first,
           liked: Gossip.order(Arel.sql('RANDOM()')).first
@@ -133,12 +133,29 @@ def create_like(number)
 end
 
 def create_sub_comment(number)
+  SubComment.create(
+    content: Faker::Lorem.paragraph,
+    user: User.order(Arel.sql('RANDOM()')).first,
+    attached: Comment.order(Arel.sql('RANDOM()')).first
+  )
   number.times do
-    SubComment.create(
-      content: Faker::Lorem.paragraph,
-      user: User.order(Arel.sql('RANDOM()')).first,
-      comment: Comment.order(Arel.sql('RANDOM()')).first
-    )
+    randChoice = rand(0..1)
+    case randChoice
+      when 0
+        puts 'choice sub_comment 0'
+        SubComment.create(
+          content: Faker::Lorem.paragraph,
+          user: User.order(Arel.sql('RANDOM()')).first,
+          attached: Comment.order(Arel.sql('RANDOM()')).first
+        )
+      when 1
+        puts 'choice sub_comment 1'
+        SubComment.create(
+          content: Faker::Lorem.paragraph,
+          user: User.order(Arel.sql('RANDOM()')).first,
+          attached: SubComment.order(Arel.sql('RANDOM()')).first
+        )
+      end
   end
 end
 
