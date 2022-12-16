@@ -114,11 +114,21 @@ end
 def create_like(number)
   # [TO-DO] Need to be improve. Just like comment or gossip
   number.times do
-    Like.create(
-      user: User.order(Arel.sql('RANDOM()')).first,
-      comment: Comment.order(Arel.sql('RANDOM()')).first,
-      gossip: Gossip.order(Arel.sql('RANDOM()')).first
-    )
+    randChoice = rand(0..1)
+    case randChoice
+      when 0
+        puts "choice 0"
+        Like.create(
+          user: User.order(Arel.sql('RANDOM()')).first,
+          liked: Comment.order(Arel.sql('RANDOM()')).first
+        )
+      when 1
+        puts "choice 1"
+        Like.create(
+          user: User.order(Arel.sql('RANDOM()')).first,
+          liked: Gossip.order(Arel.sql('RANDOM()')).first
+        )
+    end
   end
 end
 
