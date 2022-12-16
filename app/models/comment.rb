@@ -3,6 +3,6 @@
 class Comment < ApplicationRecord
   belongs_to :gossip
   belongs_to :user
-  has_many :likes
+  has_many :likes, as: :liked
   has_many :sub_comments
 end
