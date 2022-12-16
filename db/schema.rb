@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_16_093706) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_16_150353) do
   create_table "cities", force: :cascade do |t|
     t.string "name"
     t.string "zip_code"
@@ -76,10 +76,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_16_093706) do
   create_table "sub_comments", force: :cascade do |t|
     t.text "content"
     t.integer "user_id"
-    t.integer "comment_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["comment_id"], name: "index_sub_comments_on_comment_id"
+    t.string "attached_type"
+    t.integer "attached_id"
+    t.index ["attached_type", "attached_id"], name: "index_sub_comments_on_attached"
     t.index ["user_id"], name: "index_sub_comments_on_user_id"
   end
 
@@ -109,7 +110,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_16_093706) do
   add_foreign_key "likes", "users"
   add_foreign_key "private_message_receiveds", "users", column: "receiver_id"
   add_foreign_key "private_messages", "users", column: "sender_id"
-  add_foreign_key "sub_comments", "comments"
   add_foreign_key "sub_comments", "users"
   add_foreign_key "users", "cities"
 end
